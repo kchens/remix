@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import data from './bus-scheduling-input.json'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div 
+        style={{marginTop: '1rem', backgroundColor: 'gray', padding: '1rem'}}
+      >
+        { data.map((trip, i) => {
+          const left = `${trip.startTime}px`
+          const right = `${trip.endTime}px`
+          console.log(left)
+          console.log(right)
+          return (
+            <div
+              key={i}
+              style={{ margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black' }}
+            >
+              <div
+                style={{ marginLeft: left, width: right, backgroundColor: 'orange', padding: '0.5rem', border: '1px solid black' }}
+              >
+                {trip.id}
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   );
 }
