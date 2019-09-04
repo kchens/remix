@@ -9,6 +9,7 @@ class Trip extends PureComponent {
 
     render() {
         const { id, startTime, endTime } = this.props
+        const width = `${endTime - startTime}px`
         return (
             <div
                 style={{ margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black' }}
@@ -16,8 +17,7 @@ class Trip extends PureComponent {
                 <div
                     style={{
                         marginLeft: `${startTime}px`,
-                        width: `${endTime}px`,
-                        padding: '0.5rem',
+                        width: width,
                         border: '1px solid black'
                     }}
                     onClick={this.toggleSelectColor}
