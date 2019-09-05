@@ -9,8 +9,8 @@ const withBusTripManager = WrappedComponent => {
 
             this.state = {
                 selectedIndices: {
-                    busIndex: 0,
-                    tripIndex: 0,
+                    busIndex: null,
+                    tripIndex: null,
                 },
                 buses: []
             }
@@ -67,7 +67,7 @@ const withBusTripManager = WrappedComponent => {
                 tripIndex: null,
             }})
         }
-
+        
         render() {
             return (
                 <WrappedComponent 
