@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import tripsData from '../../bus-scheduling-input.json'
+import { isEqual } from 'lodash'
 
 const withBusTripManager = WrappedComponent => {
     return class extends PureComponent {
@@ -7,7 +8,10 @@ const withBusTripManager = WrappedComponent => {
             super(props)
 
             this.state = {
-                lastSelectedIndex: 0,
+                selectedIndices: {
+                    busIndex: 0,
+                    tripIndex: 0,
+                },
                 buses: []
             }
 
@@ -20,7 +24,6 @@ const withBusTripManager = WrappedComponent => {
                 trip.busId = i
                 return { trips: [trip] , ...{ id: i} }
             })
-            console.log(buses)
             this.setState({ buses })
         }
 
@@ -31,29 +34,31 @@ const withBusTripManager = WrappedComponent => {
             this.setState({ buses })
         }
 
-        selectTrip(newTripIndex) {
-        //     const { trips, lastSelectedIndex } = this.state
-        //     const newTrips = Object.assign([], trips)
-        //     const lastTrip = newTrips[lastSelectedIndex]
+        selectTrip(trip, tripIndex) {
+            const { buses, selectedIndices } = this.state
+            const newBuses = Object.assign([], buses)
+            const newSelectedIndices = {
+                busIndex: trip.busId,
+                tripIndex
+            }
 
-        //     // toggle 'selected' on same trip
-        //     if (lastSelectedIndex === newTripIndex) {
-        //         lastTrip.selected = lastTrip.selected ? false : true
-        //         newTrips[lastSelectedIndex] = lastTrip
-        //         this.setState({ lastSelectedIndex: newTripIndex, trips: newTrips })
-        //         return 
-        //     } 
+            // toggle 'selected' on same trip
+            if (isEqual(selectedIndices, newSelectedIndices)) {
+                trip.selected = trip.selected ? false : true
+                newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = trip
+            } else {
+                // get old trip, reset 'selected'
+                const oldTrip = newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
+                oldTrip.selected = false
+                newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = oldTrip
+
+                // get new trip, set 'selected' 
+                const newTrip = newBuses[newSelectedIndices.busIndex].trips[newSelectedIndices.tripIndex]
+                newTrip.selected = true
+                newBuses[newSelectedIndices.busIndex].trips[newSelectedIndices.tripIndex] = newTrip
+            }
             
-
-        //     // // get old trip, reset 'selected'
-        //     lastTrip.selected = false
-        //     newTrips[lastSelectedIndex] = lastTrip
-        //     // get new trip, set 'selected' 
-        //     const trip = newTrips[newTripIndex]
-        //     trip.selected = true
-        //     newTrips[newTripIndex] = trip
-
-        //     this.setState({ lastSelectedIndex: newTripIndex, trips: newTrips })
+            this.setState({ selectedIndices: newSelectedIndices, buses: newBuses })
         }
 
         render() {

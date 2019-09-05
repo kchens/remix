@@ -4,12 +4,6 @@ import Trips from '../Trips'
 import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
-    constructor(props) {
-        super(props)
-        this.onDrop = this.onDrop.bind(this)
-        this.onDragOver = this.onDragOver.bind(this)
-    }
-
     onDragOver = (event) => {
         event.preventDefault();
     }
@@ -59,7 +53,7 @@ class BusTripScheduler extends PureComponent {
                         onDrop={(event) => { this.onDrop(event, bus.id) }}
                         style={{ margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
                     >
-                        <Trips trips={bus.trips} selectTrip={() => selectTrip(i)} />
+                        <Trips trips={bus.trips} selectTrip={selectTrip} />
                     </div>
                 })}
             </div>

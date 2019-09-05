@@ -1,19 +1,12 @@
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 
-class Trips extends PureComponent {
-    constructor(props) {
-        super(props)
-        this.onDragStart = this.onDragStart.bind(this)
-    }
-
+class Trips extends Component {
     onDragStart = (event, trip) => {
-        console.log('dragstart on div: ', trip)
-        
         event.dataTransfer.setData('selectedTrip', JSON.stringify(trip))
     }
 
     render() {
-        const { trips, selectTrips } = this.props
+        const { trips, selectTrip } = this.props
         let previousEndTime = 0
         return (            
             <div style={{
@@ -31,7 +24,7 @@ class Trips extends PureComponent {
                             backgroundColor: selected ? 'gray' : '',
                             border: '1px solid black'
                         }}
-                        onClick={selectTrips}
+                        onClick={() => selectTrip(trip, i)}
                     >
                         {id}
                     </div>)
