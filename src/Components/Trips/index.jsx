@@ -7,7 +7,6 @@ class Trips extends Component {
         let previousEndTime = 0
         return (            
             <div 
-                id='trips'
                 style={{
                     display: 'flex',
                 }}
@@ -15,7 +14,7 @@ class Trips extends Component {
                 {trips.map((trip, i) => {
                     const {id, startTime, endTime, selected} = trip
                     const tripDisplay = (<div
-                        id={'trip'}
+                        className={'trip'}
                         key={i}
                         style={{
                             marginLeft: `${startTime - previousEndTime}px`,
@@ -24,7 +23,7 @@ class Trips extends Component {
                             border: '1px solid black'
                         }}
                         onClick={(event) => {
-                            if (event.target.id === 'trip') selectTrip(trip, i)
+                            if (event.target.className === 'trip') selectTrip(trip, i)
                         }}
                     >
                         {id}

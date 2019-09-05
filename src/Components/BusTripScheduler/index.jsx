@@ -50,7 +50,6 @@ class BusTripScheduler extends PureComponent {
                 {buses.map((bus, i) => {
                     if (bus.trips.length === 0) return null
                     return <div
-                        id={'bus'}
                         key={i}
                         onClick={() => this.onClick(bus.id)}
                         style={{ display: 'flex', margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
