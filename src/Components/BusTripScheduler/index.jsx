@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import withBusTripManager from './with-bus-trip-manager'
 import Trips from '../Trips'
+import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
     constructor(props) {
@@ -15,30 +16,28 @@ class BusTripScheduler extends PureComponent {
 
     onDrop = (event, busId) => {
         const { buses } = this.props
-        console.log('onDrop on div: ', busId);
+        
         let selectedTrip = JSON.parse(event.dataTransfer.getData('selectedTrip'))
-        const oldBus = buses[selectedTrip.busId]
         const newBus = buses[busId]
         
         // check if trip can be added
         for (let i = 0; i < newBus.trips.length; i++) {
             if (newBus.trips[i].endTime > selectedTrip.startTime) {
+                console.log("Can't add trip to this busline b/c timing doesn't work.")
                 return
             }
         }
-        debugger
         
-        // update oldBuses
-        // oldBus.trips = Object.assign([])
+        // remove selectedTrip from oldBuses
+        const oldBus = buses[selectedTrip.busId]
+        remove(oldBus.trips, selectedTrip)
         
-        // selectedTrip.busId = newBus.id
-        // newBus.trips.push(selectedTrip)
-        
-        // const newBuses = Object.assign([], this.props.buses)
-        // newBuses[selectedTrip.busId] = oldBus
-        // newBuses[busId] = newBus
+        // update selectedTrip, add to newBus, sort on startTimes
+        selectedTrip.busId = newBus.id
+        newBus.trips = [ ...newBus.trips, selectedTrip]
+        newBus.trips.sort((a, b) => a.startTime - b.startTime)
 
-        // this.props.updateBuses(newBuses)
+        this.props.updateBuses(oldBus, newBus)
     }
 
     render() {
