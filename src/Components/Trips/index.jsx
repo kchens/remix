@@ -24,7 +24,7 @@ class Trips extends Component {
                             border: '1px solid black'
                         }}
                         onClick={(event) => {
-                            selectTrip(trip, i)
+                            if (event.target.id === 'trip') selectTrip(trip, i)
                         }}
                     >
                         {id}

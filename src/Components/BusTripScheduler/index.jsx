@@ -4,9 +4,10 @@ import Trips from '../Trips'
 import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
-    onClick = (event, busId) => {
+    onClick = (busId) => {
         const { buses, selectedIndices } = this.props
-        if (event.target.id === 'trip') return 
+        if (selectedIndices.busIndex === null) return 
+
         let selectedTrip = buses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
         const newBus = buses[busId]
         
@@ -51,7 +52,7 @@ class BusTripScheduler extends PureComponent {
                     return <div
                         id={'bus'}
                         key={i}
-                        onClick={(event) => this.onClick(event, bus.id)}
+                        onClick={() => this.onClick(bus.id)}
                         style={{ display: 'flex', margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
                     >
                         <Trips trips={bus.trips} selectTrip={selectTrip} />
