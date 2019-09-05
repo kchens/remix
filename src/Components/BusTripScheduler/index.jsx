@@ -16,13 +16,17 @@ class BusTripScheduler extends PureComponent {
 
     onDrop = (event, busId) => {
         const { buses } = this.props
-        
         let selectedTrip = JSON.parse(event.dataTransfer.getData('selectedTrip'))
         const newBus = buses[busId]
         
         // check if trip can be added
+        let currentTrip 
         for (let i = 0; i < newBus.trips.length; i++) {
-            if (newBus.trips[i].endTime > selectedTrip.startTime) {
+            currentTrip = newBus.trips[i]
+            if ((selectedTrip.startTime < currentTrip.endTime && selectedTrip.endTime > currentTrip.endTime) // trip start can't be before currentTrip ends
+                || (selectedTrip.startTime > currentTrip.startTime && selectedTrip.endTime < currentTrip.endTime) // trip can't be within currentTrip
+                || (selectedTrip.endTime > currentTrip.startTime && selectedTrip.endTime < currentTrip.endTime) // trip end can't be after currentTrip starts
+            ) {
                 console.log("Can't add trip to this busline b/c timing doesn't work.")
                 return
             }
@@ -52,7 +56,7 @@ class BusTripScheduler extends PureComponent {
                         key={i}
                         onDragOver={(event) => this.onDragOver(event)}
                         onDrop={(event) => { this.onDrop(event, bus.id) }}
-                        style={{ margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black' }}
+                        style={{ margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
                     >
                         <Trips trips={bus.trips} selectTrip={() => selectTrip(i)} />
                     </div>

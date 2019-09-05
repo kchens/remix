@@ -14,19 +14,19 @@ class Trips extends PureComponent {
 
     render() {
         const { trips, selectTrips } = this.props
-
+        let previousEndTime = 0
         return (            
             <div style={{
                 display: 'flex',
             }}>
                 {trips.map((trip, i) => {
                     const {id, startTime, endTime, selected} = trip
-                    return (<div
+                    const tripDisplay = (<div
                         key={i}
                         draggable
                         onDragStart={(event) => this.onDragStart(event, trip)}
                         style={{
-                            marginLeft: `${startTime}px`,
+                            marginLeft: `${startTime - previousEndTime}px`,
                             width: `${endTime - startTime}px`,
                             backgroundColor: selected ? 'gray' : '',
                             border: '1px solid black'
@@ -35,6 +35,9 @@ class Trips extends PureComponent {
                     >
                         {id}
                     </div>)
+
+                    previousEndTime = endTime
+                    return tripDisplay
                 })}
             </div>
         )
