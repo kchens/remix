@@ -52,6 +52,7 @@ class BusTripScheduler extends PureComponent {
             >
                 BusTripScheduler
                 {buses.map((bus, i) => {
+                    if (bus.trips.length === 0) return null
                     return <div
                         key={i}
                         onDragOver={(event) => this.onDragOver(event)}
