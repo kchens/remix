@@ -17,14 +17,16 @@ class Trips extends Component {
                     const tripDisplay = (<div
                         key={i}
                         draggable
-                        onDragStart={(event) => this.onDragStart(event, trip)}
+                        onDragStart={(event) => {
+                            selectTrip(trip, i)
+                            this.onDragStart(event, trip)
+                        }}
                         style={{
                             marginLeft: `${startTime - previousEndTime}px`,
                             width: `${endTime - startTime}px`,
                             backgroundColor: selected ? 'gray' : '',
                             border: '1px solid black'
                         }}
-                        onClick={() => selectTrip(trip, i)}
                     >
                         {id}
                     </div>)

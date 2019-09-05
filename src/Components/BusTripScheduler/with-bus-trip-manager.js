@@ -14,10 +14,8 @@ const withBusTripManager = WrappedComponent => {
                 },
                 buses: []
             }
-
-            this.selectTrip = this.selectTrip.bind(this)
-            this.updateBuses = this.updateBuses.bind(this)
         }
+
         componentDidMount() {
             let buses = tripsData.map((trip, i) => {
                 trip.selected = false
@@ -27,14 +25,14 @@ const withBusTripManager = WrappedComponent => {
             this.setState({ buses })
         }
 
-        updateBuses(oldBus, newBus) {
+        updateBuses = (oldBus, newBus) => {
             const buses = Object.assign([], this.state.buses)
             buses[oldBus.id] = oldBus
             buses[newBus.id] = newBus
             this.setState({ buses })
         }
 
-        selectTrip(trip, tripIndex) {
+        selectTrip = (trip, tripIndex) => {
             const { buses, selectedIndices } = this.state
             const newBuses = Object.assign([], buses)
             const newSelectedIndices = {
@@ -48,9 +46,11 @@ const withBusTripManager = WrappedComponent => {
                 newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = trip
             } else {
                 // get old trip, reset 'selected'
-                const oldTrip = newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
-                oldTrip.selected = false
-                newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = oldTrip
+                if (selectedIndices.busIndex !== null) {
+                    const oldTrip = newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
+                    oldTrip.selected = false
+                    newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = oldTrip
+                }
 
                 // get new trip, set 'selected' 
                 const newTrip = newBuses[newSelectedIndices.busIndex].trips[newSelectedIndices.tripIndex]
@@ -61,11 +61,19 @@ const withBusTripManager = WrappedComponent => {
             this.setState({ selectedIndices: newSelectedIndices, buses: newBuses })
         }
 
+        unselectTrip = () => {
+            this.setState({ selectedIndices: {
+                busIndex: null,
+                tripIndex: null,
+            }})
+        }
+
         render() {
             return (
                 <WrappedComponent 
                     {...this.state}
                     selectTrip={this.selectTrip}
+                    unselectTrip={this.unselectTrip}
                     updateBuses={this.updateBuses}
                 />
             )

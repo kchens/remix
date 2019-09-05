@@ -32,6 +32,8 @@ class BusTripScheduler extends PureComponent {
         
         // update selectedTrip, add to newBus, sort on startTimes
         selectedTrip.busId = newBus.id
+        selectedTrip.selected = false
+        this.props.unselectTrip()
         newBus.trips = [ ...newBus.trips, selectedTrip]
         newBus.trips.sort((a, b) => a.startTime - b.startTime)
 
