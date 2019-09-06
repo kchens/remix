@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import Trip from './Trip'
 class Trips extends Component {
 
     render() {
@@ -7,27 +7,25 @@ class Trips extends Component {
         let previousEndTime = 0
         return (            
             <div 
-                style={{
-                    display: 'flex',
-                }}
+                style={{ display: 'flex' }}
             >
                 {trips.map((trip, i) => {
                     const {id, startTime, endTime, selected} = trip
-                    const tripDisplay = (<div
-                        className={'trip'}
-                        key={i}
-                        style={{
-                            marginLeft: `${startTime - previousEndTime}px`,
-                            width: `${endTime - startTime}px`,
-                            backgroundColor: selected ? 'gray' : '',
-                            border: '1px solid black'
-                        }}
-                        onClick={(event) => {
-                            if (event.target.className === 'trip') selectTrip(trip, i)
-                        }}
-                    >
-                        {id}
-                    </div>)
+                    const updatedStartTime = startTime - previousEndTime
+                    const updatedEndTime = endTime - startTime
+                    
+                    const tripDisplay = (
+                        <Trip
+                            key={i}
+                            id={id}
+                            selected={selected}
+                            startTime={updatedStartTime}
+                            endTime={updatedEndTime}
+                            selectTrip={(event) => {
+                                if (event.target.className === 'trip') selectTrip(trip, i)
+                            }}
+                        />
+                    )
 
                     previousEndTime = endTime
                     return tripDisplay

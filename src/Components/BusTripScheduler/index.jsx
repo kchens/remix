@@ -5,7 +5,7 @@ import Bus from '../Bus'
 import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
-    addTripToBus = (event, busId) => {
+    addTripToBus = (busId) => {
         const { buses, selectedIndices, hasSelectedTrip } = this.props
         if (!hasSelectedTrip) {
             this.props.addBus()
@@ -46,18 +46,16 @@ class BusTripScheduler extends PureComponent {
     render() {
         const { buses, selectTrip, hasSelectedTrip } = this.props
         return (
-            <div
-                style={{ marginTop: '1rem', backgroundColor: 'gray', padding: '1rem' }}
-            >
+            <div style={{ marginTop: '1rem', backgroundColor: 'gray', padding: '1rem' }}>
                 BusTripScheduler
                 {buses.map((bus, i) => {
                     if (hasSelectedTrip && (buses.length - 1) === i) {
-                        return <Bus key={i} addTripToBus={(event) => this.addTripToBus(event, bus.id)} />
+                        return <Bus key={i} addTripToBus={() => this.addTripToBus(bus.id)} />
                     }
 
                     if (bus.trips.length === 0) return null
                     
-                    return <Bus key={i} addTripToBus={(event) => this.addTripToBus(event, bus.id)}>
+                    return <Bus key={i} addTripToBus={() => this.addTripToBus(bus.id)}>
                         <Trips trips={bus.trips} selectTrip={selectTrip} />
                     </Bus>
                 })}
