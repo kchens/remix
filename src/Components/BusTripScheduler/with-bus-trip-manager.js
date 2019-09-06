@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import tripsData from '../../bus-scheduling-input.json'
-import { isEqual } from 'lodash'
+import { isEqual, remove } from 'lodash'
+
 
 const withBusTripManager = WrappedComponent => {
     return class extends PureComponent {
@@ -37,8 +38,20 @@ const withBusTripManager = WrappedComponent => {
             this.setState({ buses })
         }
 
-        updateBuses = (oldBus, newBus) => {
+        updateBuses = (newBus, selectedTrip) => {
             const buses = Object.assign([], this.state.buses)
+
+            // remove selectedTrip from oldBuses
+            const oldBus = buses[selectedTrip.busId]
+            remove(oldBus.trips, selectedTrip)
+
+            // update selectedTrip, add to newBus, sort on startTimes
+            selectedTrip.busId = newBus.id
+            selectedTrip.selected = false
+            this.unselectTrip()
+            newBus.trips = [...newBus.trips, selectedTrip]
+            newBus.trips.sort((a, b) => a.startTime - b.startTime)
+
             buses[oldBus.id] = oldBus
             buses[newBus.id] = newBus
             this.setState({ buses })

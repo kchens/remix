@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react'
 import withBusTripManager from './with-bus-trip-manager'
 import Trips from '../Trips'
 import Bus from '../Bus'
-import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
     addTripToBus = (busId) => {
@@ -27,20 +26,8 @@ class BusTripScheduler extends PureComponent {
                 return
             }
         }
-        
-        // TODO: Move to with-bus-trip-manager
-        // remove selectedTrip from oldBuses
-        const oldBus = buses[selectedTrip.busId]
-        remove(oldBus.trips, selectedTrip)
-        
-        // update selectedTrip, add to newBus, sort on startTimes
-        selectedTrip.busId = newBus.id
-        selectedTrip.selected = false
-        this.props.unselectTrip()
-        newBus.trips = [ ...newBus.trips, selectedTrip]
-        newBus.trips.sort((a, b) => a.startTime - b.startTime)
 
-        this.props.updateBuses(oldBus, newBus)
+        this.props.updateBuses(newBus, selectedTrip)
     }
 
     render() {
