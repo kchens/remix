@@ -21,9 +21,7 @@ class Trips extends Component {
                             selected={selected}
                             startTime={updatedStartTime}
                             endTime={updatedEndTime}
-                            selectTrip={(event) => {
-                                if (event.target.className === 'trip') selectTrip(trip, i)
-                            }}
+                            selectTrip={() => selectTrip(trip, i)}
                         />
                     )
 

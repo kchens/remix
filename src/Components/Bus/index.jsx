@@ -2,11 +2,8 @@ import React, { PureComponent } from 'react'
 
 class Bus extends PureComponent {
     addTripToBus = () => {
-        const { bus, hasSelectedTrip, selected } = this.props
-        if (!hasSelectedTrip) {
-            this.props.addBus()
-            return
-        }
+        const { bus, hasSelectedTrip, selected, addTripToBus } = this.props
+        if (!hasSelectedTrip) return
 
         let selectedTrip = selected.trip
         const newBus = Object.assign({}, bus)
@@ -24,7 +21,7 @@ class Bus extends PureComponent {
             }
         }
 
-        this.props.updateBuses(newBus, selectedTrip)
+        addTripToBus(newBus, selectedTrip)
     }
 
     render() {
