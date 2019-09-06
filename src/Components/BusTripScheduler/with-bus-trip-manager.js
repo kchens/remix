@@ -13,10 +13,6 @@ const withBusTripManager = WrappedComponent => {
                     trip: null
                 },
                 hasSelectedTrip: false,
-                selectedIndices: {
-                    busIndex: null,
-                    tripIndex: null,
-                },
                 buses: []
             }
         }
@@ -61,35 +57,29 @@ const withBusTripManager = WrappedComponent => {
         }
 
         selectTrip = (trip, tripIndex) => {
-            const { buses, selectedIndices, hasSelectedTrip } = this.state
+            const { selected, buses, hasSelectedTrip } = this.state
             const newBuses = Object.assign([], buses)
-            const newSelectedIndices = {
-                busIndex: trip.busId,
-                tripIndex
-            }
+            const oldTrip = selected.trip
 
             // toggle 'selected' on same trip
-            if (isEqual(selectedIndices, newSelectedIndices)) {
+            if (isEqual(oldTrip, trip)) {
                 trip.selected = trip.selected ? false : true
-                newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = trip
+                newBuses[trip.busId].trips[tripIndex] = trip
             } else {
                 // get old trip, reset 'selected'
                 if (hasSelectedTrip) {
-                    const oldTrip = newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
                     oldTrip.selected = false
-                    newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = oldTrip
+                    newBuses[trip.busId].trips[tripIndex] = oldTrip
                 }
 
                 // get new trip, set 'selected' 
-                const newTrip = newBuses[newSelectedIndices.busIndex].trips[newSelectedIndices.tripIndex]
-                newTrip.selected = true
-                newBuses[newSelectedIndices.busIndex].trips[newSelectedIndices.tripIndex] = newTrip
+                trip.selected = true
+                newBuses[trip.busId].trips[tripIndex] = trip
             }
             
             this.setState({ 
                 selected: { trip },
                 hasSelectedTrip: true,
-                selectedIndices: newSelectedIndices, 
                 buses: newBuses
             })
         }

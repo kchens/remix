@@ -27,7 +27,6 @@ class BusTripScheduler extends PureComponent {
                                     bus={bus} 
                                     selected={selected} 
                                     addTripToBus={addTripToBus} 
-                                    selectTrip={selectTrip} 
                                     hasSelectedTrip={hasSelectedTrip} 
                                 />
                     }
@@ -38,7 +37,6 @@ class BusTripScheduler extends PureComponent {
                                 bus={bus} 
                                 selected={selected}
                                 addTripToBus={addTripToBus} 
-                                selectTrip={selectTrip} 
                                 hasSelectedTrip={hasSelectedTrip}
                             >
                                 <Trips trips={bus.trips} selectTrip={selectTrip} />

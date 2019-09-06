@@ -18,10 +18,13 @@ class Trips extends Component {
                         <Trip
                             key={i}
                             id={id}
+                            className={'trip'}
                             selected={selected}
                             startTime={updatedStartTime}
                             endTime={updatedEndTime}
-                            selectTrip={() => selectTrip(trip, i)}
+                            selectTrip={(event) => {
+                                if (event.target.className === 'trip') selectTrip(trip, i)
+                            }}
                         />
                     )
 
