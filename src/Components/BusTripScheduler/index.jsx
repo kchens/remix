@@ -17,7 +17,7 @@ class BusTripScheduler extends PureComponent {
         const isTripsEmpty = (bus) => bus.trips.length === 0
 
         return (
-            <div style={{ marginTop: '1rem', backgroundColor: 'gray', padding: '1rem' }}
+            <div style={{ marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}
                 onClick={this.addBus}
             >
                 BusTripScheduler

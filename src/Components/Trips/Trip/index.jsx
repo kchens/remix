@@ -7,7 +7,7 @@ const Trip = ({ id, startTime, endTime, selected, selectTrip }) => {
             style={{
                 marginLeft: `${startTime}px`,
                 width: `${endTime}px`,
-                backgroundColor: selected ? 'gray' : '',
+                backgroundColor: selected ? 'blue' : '',
                 border: '1px solid black'
             }}
             onClick={selectTrip}

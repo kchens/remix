@@ -25,14 +25,15 @@ class Bus extends PureComponent {
     }
 
     render() {
-        const { children } = this.props 
+        const { bus, children } = this.props 
+        const isEven = () => bus.id % 2 === 0
         return (
             <div
                 onClick={this.addTripToBus}
                 style={{
                     display: 'flex',
                     margin: '0.5rem',
-                    backgroundColor: 'yellow',
+                    backgroundColor: isEven() ? 'gray' : 'white',
                     padding: '0.5rem',
                     borderBottom: '1px solid black',
                     minHeight: '22px'
