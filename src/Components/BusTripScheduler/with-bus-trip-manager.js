@@ -8,6 +8,7 @@ const withBusTripManager = WrappedComponent => {
             super(props)
 
             this.state = {
+                hasSelectedTrip: false,
                 selectedIndices: {
                     busIndex: null,
                     tripIndex: null,
@@ -44,7 +45,7 @@ const withBusTripManager = WrappedComponent => {
         }
 
         selectTrip = (trip, tripIndex) => {
-            const { buses, selectedIndices } = this.state
+            const { buses, selectedIndices, hasSelectedTrip } = this.state
             const newBuses = Object.assign([], buses)
             const newSelectedIndices = {
                 busIndex: trip.busId,
@@ -57,7 +58,7 @@ const withBusTripManager = WrappedComponent => {
                 newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = trip
             } else {
                 // get old trip, reset 'selected'
-                if (selectedIndices.busIndex !== null) {
+                if (hasSelectedTrip) {
                     const oldTrip = newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
                     oldTrip.selected = false
                     newBuses[selectedIndices.busIndex].trips[selectedIndices.tripIndex] = oldTrip
@@ -69,14 +70,21 @@ const withBusTripManager = WrappedComponent => {
                 newBuses[newSelectedIndices.busIndex].trips[newSelectedIndices.tripIndex] = newTrip
             }
             
-            this.setState({ selectedIndices: newSelectedIndices, buses: newBuses })
+            this.setState({ 
+                hasSelectedTrip: true,
+                selectedIndices: newSelectedIndices, 
+                buses: newBuses
+            })
         }
 
         unselectTrip = () => {
-            this.setState({ selectedIndices: {
-                busIndex: null,
-                tripIndex: null,
-            }})
+            this.setState({ 
+                hasSelectedTrip: false,
+                selectedIndices: {
+                    busIndex: null,
+                    tripIndex: null,
+                }
+            })
         }
         
         render() {

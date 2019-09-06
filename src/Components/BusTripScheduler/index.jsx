@@ -6,12 +6,12 @@ import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
     addTripToBus = (event, busId) => {
-        const { buses, selectedIndices } = this.props
-        if (selectedIndices.busIndex === null) {
+        const { buses, selectedIndices, hasSelectedTrip } = this.props
+        if (!hasSelectedTrip) {
             this.props.addBus()
             return
         }
-        console.log(event.target)
+
         let selectedTrip = buses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
         const newBus = buses[busId]
         
@@ -44,16 +44,17 @@ class BusTripScheduler extends PureComponent {
     }
 
     render() {
-        const { buses, selectTrip, selectedIndices } = this.props
+        const { buses, selectTrip, hasSelectedTrip } = this.props
         return (
             <div
                 style={{ marginTop: '1rem', backgroundColor: 'gray', padding: '1rem' }}
             >
                 BusTripScheduler
                 {buses.map((bus, i) => {
-                    if (selectedIndices.busIndex !== null && (buses.length - 1) === i) {
+                    if (hasSelectedTrip && (buses.length - 1) === i) {
                         return <Bus key={i} addTripToBus={(event) => this.addTripToBus(event, bus.id)} />
                     }
+
                     if (bus.trips.length === 0) return null
                     
                     return <Bus key={i} addTripToBus={(event) => this.addTripToBus(event, bus.id)}>
