@@ -60,10 +60,12 @@ const withBusTripManager = WrappedComponent => {
             const { selected, buses, hasSelectedTrip } = this.state
             const newBuses = Object.assign([], buses)
             const oldTrip = selected.trip
-
+            let newSelectedState
+            
             // toggle 'selected' on same trip
             if (isEqual(oldTrip, trip)) {
-                trip.selected = trip.selected ? false : true
+                newSelectedState = trip.selected ? false : true
+                trip.selected = newSelectedState
                 newBuses[trip.busId].trips[tripIndex] = trip
             } else {
                 // get old trip, reset 'selected'
@@ -73,13 +75,14 @@ const withBusTripManager = WrappedComponent => {
                 }
 
                 // get new trip, set 'selected' 
-                trip.selected = true
+                newSelectedState = true
+                trip.selected = newSelectedState
                 newBuses[trip.busId].trips[tripIndex] = trip
             }
             
             this.setState({ 
                 selected: { trip },
-                hasSelectedTrip: true,
+                hasSelectedTrip: newSelectedState,
                 buses: newBuses
             })
         }
@@ -87,9 +90,8 @@ const withBusTripManager = WrappedComponent => {
         unselectTrip = () => {
             this.setState({ 
                 hasSelectedTrip: false,
-                selectedIndices: {
-                    busIndex: null,
-                    tripIndex: null,
+                selected: {
+                    trip: null
                 }
             })
         }
