@@ -4,10 +4,13 @@ import Trips from '../Trips'
 import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
-    onClick = (busId) => {
+    onClick = (event, busId) => {
         const { buses, selectedIndices } = this.props
-        if (selectedIndices.busIndex === null) return 
-
+        if (selectedIndices.busIndex === null) {
+            this.props.addBus()
+            return
+        }
+        console.log(event.target)
         let selectedTrip = buses[selectedIndices.busIndex].trips[selectedIndices.tripIndex]
         const newBus = buses[busId]
         
@@ -40,18 +43,26 @@ class BusTripScheduler extends PureComponent {
     }
 
     render() {
-        const { buses, selectTrip } = this.props
+        const { buses, selectTrip, selectedIndices } = this.props
         return (
             <div
-                id='scheduler'
                 style={{ marginTop: '1rem', backgroundColor: 'gray', padding: '1rem' }}
             >
                 BusTripScheduler
                 {buses.map((bus, i) => {
+                    if (selectedIndices.busIndex !== null && (buses.length - 1) === i) {
+                        return <div
+                            key={i}
+                            onClick={(event) => this.onClick(event, bus.id)}
+                            style={{ display: 'flex', margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
+                        >
+                        </div>
+                    }
                     if (bus.trips.length === 0) return null
+                    
                     return <div
                         key={i}
-                        onClick={() => this.onClick(bus.id)}
+                        onClick={(event) => this.onClick(event, bus.id)}
                         style={{ display: 'flex', margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
                     >
                         <Trips trips={bus.trips} selectTrip={selectTrip} />

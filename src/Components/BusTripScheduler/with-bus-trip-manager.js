@@ -25,6 +25,17 @@ const withBusTripManager = WrappedComponent => {
             this.setState({ buses })
         }
 
+        addBus = () => {
+            const newBus = {
+                id: this.state.buses.length,
+                trips: []
+            }
+
+            const buses = Object.assign([], this.state.buses) 
+            buses.push(newBus)
+            this.setState({ buses })
+        }
+
         updateBuses = (oldBus, newBus) => {
             const buses = Object.assign([], this.state.buses)
             buses[oldBus.id] = oldBus
@@ -75,6 +86,7 @@ const withBusTripManager = WrappedComponent => {
                     selectTrip={this.selectTrip}
                     unselectTrip={this.unselectTrip}
                     updateBuses={this.updateBuses}
+                    addBus={this.addBus}
                 />
             )
         }
