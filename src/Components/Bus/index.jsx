@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 class Bus extends PureComponent {
     addTripToBus = () => {
-        const { bus, hasSelectedTrip, selected, addTripToBus } = this.props
+        const { bus, hasSelectedTrip, selected, addTripToBus, updateTripToBusError } = this.props
         if (!hasSelectedTrip) return
 
         let selectedTrip = selected.trip
@@ -16,7 +16,7 @@ class Bus extends PureComponent {
                 || (selectedTrip.startTime > currentTrip.startTime && selectedTrip.endTime < currentTrip.endTime) // trip can't be within currentTrip
                 || (selectedTrip.endTime > currentTrip.startTime && selectedTrip.endTime < currentTrip.endTime) // trip end can't be after currentTrip starts
             ) {
-                console.log("Can't add trip to this busline b/c timing doesn't work.")
+                updateTripToBusError(true)
                 return
             }
         }

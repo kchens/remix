@@ -9,6 +9,7 @@ const withBusTripManager = WrappedComponent => {
             super(props)
 
             this.state = {
+                isAddTripError: false,
                 selected: {
                     trip: null
                 },
@@ -18,12 +19,17 @@ const withBusTripManager = WrappedComponent => {
         }
 
         componentDidMount() {
+            // prepare data
             let buses = tripsData.map((trip, i) => {
                 trip.selected = false
                 trip.busId = i
                 return { trips: [trip] , ...{ id: i} }
             })
             this.setState({ buses })
+        }
+
+        updateTripToBusError = (isAddTripError) => {
+            this.setState({ isAddTripError })
         }
 
         addBus = () => {
@@ -57,6 +63,8 @@ const withBusTripManager = WrappedComponent => {
         }
 
         selectTrip = (trip, tripIndex) => {
+            this.updateTripToBusError(false)
+
             const { selected, buses, hasSelectedTrip } = this.state
             const newBuses = Object.assign([], buses)
             const oldTrip = selected.trip
@@ -104,6 +112,7 @@ const withBusTripManager = WrappedComponent => {
                     unselectTrip={this.unselectTrip}
                     addTripToBus={this.addTripToBus}
                     addBus={this.addBus}
+                    updateTripToBusError={this.updateTripToBusError}
                 />
             )
         }

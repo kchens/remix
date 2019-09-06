@@ -12,7 +12,7 @@ class BusTripScheduler extends PureComponent {
     }
 
     render() {
-        const { addTripToBus, buses, selectTrip, hasSelectedTrip, selected } = this.props
+        const { updateTripToBusError, addTripToBus, buses, selectTrip, hasSelectedTrip, selected, isAddTripError } = this.props
         const isLastBus = (i) => buses.length - 1 === i
         const isTripsEmpty = (bus) => bus.trips.length === 0
 
@@ -21,13 +21,19 @@ class BusTripScheduler extends PureComponent {
                 onClick={this.addBus}
             >
                 BusTripScheduler
+                {isAddTripError && (
+                    <div style={{ backgroundColor: 'yellow' }}>
+                        Can't add trip to this busline b/c timing doesn't work.
+                    </div>
+                )}
                 {buses.map((bus, i) => {
                     if (hasSelectedTrip && isLastBus(i)) {
                         return <Bus key={i} 
                                     bus={bus} 
                                     selected={selected} 
                                     addTripToBus={addTripToBus} 
-                                    hasSelectedTrip={hasSelectedTrip} 
+                                    hasSelectedTrip={hasSelectedTrip}
+                                    updateTripToBusError={updateTripToBusError} 
                                 />
                     }
 
@@ -38,6 +44,7 @@ class BusTripScheduler extends PureComponent {
                                 selected={selected}
                                 addTripToBus={addTripToBus} 
                                 hasSelectedTrip={hasSelectedTrip}
+                                updateTripToBusError={updateTripToBusError}
                             >
                                 <Trips trips={bus.trips} selectTrip={selectTrip} />
                             </Bus>
