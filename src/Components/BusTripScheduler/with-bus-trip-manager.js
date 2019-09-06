@@ -9,6 +9,9 @@ const withBusTripManager = WrappedComponent => {
             super(props)
 
             this.state = {
+                selected: {
+                    trip: null
+                },
                 hasSelectedTrip: false,
                 selectedIndices: {
                     busIndex: null,
@@ -84,6 +87,7 @@ const withBusTripManager = WrappedComponent => {
             }
             
             this.setState({ 
+                selected: { trip },
                 hasSelectedTrip: true,
                 selectedIndices: newSelectedIndices, 
                 buses: newBuses
