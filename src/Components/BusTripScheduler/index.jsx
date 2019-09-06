@@ -1,10 +1,11 @@
 import React, {PureComponent} from 'react'
 import withBusTripManager from './with-bus-trip-manager'
 import Trips from '../Trips'
+import Bus from '../Bus'
 import {remove} from 'lodash'
 
 class BusTripScheduler extends PureComponent {
-    onClick = (event, busId) => {
+    addTripToBus = (event, busId) => {
         const { buses, selectedIndices } = this.props
         if (selectedIndices.busIndex === null) {
             this.props.addBus()
@@ -51,22 +52,13 @@ class BusTripScheduler extends PureComponent {
                 BusTripScheduler
                 {buses.map((bus, i) => {
                     if (selectedIndices.busIndex !== null && (buses.length - 1) === i) {
-                        return <div
-                            key={i}
-                            onClick={(event) => this.onClick(event, bus.id)}
-                            style={{ display: 'flex', margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
-                        >
-                        </div>
+                        return <Bus key={i} addTripToBus={(event) => this.addTripToBus(event, bus.id)} />
                     }
                     if (bus.trips.length === 0) return null
                     
-                    return <div
-                        key={i}
-                        onClick={(event) => this.onClick(event, bus.id)}
-                        style={{ display: 'flex', margin: '0.5rem', backgroundColor: 'yellow', padding: '0.5rem', borderBottom: '1px solid black', minHeight: '22px' }}
-                    >
+                    return <Bus key={i} addTripToBus={(event) => this.addTripToBus(event, bus.id)}>
                         <Trips trips={bus.trips} selectTrip={selectTrip} />
-                    </div>
+                    </Bus>
                 })}
             </div>
         )
